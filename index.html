@@ -2,9 +2,9 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Test redirection</title>
+  <title>Redirection formulaire</title>
   <script>
-    window.onload = function() {
+    window.addEventListener("load", function() {
       const formC = "https://forms.gle/NkW6r1raprVhCsrn6";
       const formD = "https://forms.gle/6iSbWUYpfS3Bv8Pc7";
 
@@ -12,11 +12,13 @@
       //const chosenURL = (chosenType === "A") ? formA : formB;
 
       document.getElementById("status").innerText = 
-        "Redirection vers Formulaire " + chosenType;
+        "Formulaire choisi : " + chosenType + " → Redirection en cours...";
 
-      // Redirection test
-      window.location.replace(chosenURL);
-    }
+      // Petit délai de 2 secondes avant redirection
+      setTimeout(() => {
+        window.open(chosenURL, "_self"); // force ouverture dans la même fenêtre
+      }, 2000);
+    });
   </script>
 </head>
 <body>
