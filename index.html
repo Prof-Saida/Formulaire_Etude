@@ -1,38 +1,25 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Redirection formulaire</title>
+  <title>Test redirection</title>
   <script>
     window.onload = function() {
-      // ⚠️ Remplace avec tes deux liens Google Forms
-      //const formA = "https://docs.google.com/forms/d/e/1FAIpQLSdUQBJkLMe9aiiVYr7GokBIRyReNlvfU00VVkQyqc2nhPG9ag/viewform";
-      //const formB = "https://docs.google.com/forms/d/e/1FAIpQLSe_8OVTd8sIO4wm-aKNd7RD6sk5OnDcVHZ8CBdKgnLU-aazgA/viewform";
       const formC = "https://forms.gle/NkW6r1raprVhCsrn6";
       const formD = "https://forms.gle/6iSbWUYpfS3Bv8Pc7";
 
-      // ⚠️ Remplace avec l’URL de ton Google Apps Script
-      const logURL = "https://script.google.com/macros/s/AKfycbwqPtM5hgDIlMK2YiUqYZTKSCEiEB6EFtm9rSjcIg1tPv354z7hvnE9xVd2UeCWUiKOPw/exec";
-      
-      // Choix aléatoire
-      // Choix aléatoire : 50% A, 50% B
       const chosenType = (Math.random() < 0.5) ? formC : formD;
       //const chosenURL = (chosenType === "A") ? formA : formB;
 
-      // Envoi de la redirection au Google Sheet
-      fetch(logURL, {
-        method: "POST",
-        body: JSON.stringify({ type: chosenType })
-      }).catch(err => console.error("Erreur log:", err));
+      document.getElementById("status").innerText = 
+        "Redirection vers Formulaire " + chosenType;
 
-      // Redirection après 1 seconde
-      setTimeout(() => {
-        window.location.href = chosenURL;
-      }, 1000);
+      // Redirection test
+      window.location.replace(chosenURL);
     }
   </script>
 </head>
 <body>
-  <p>Redirection en cours vers le formulaire...</p>
+  <p id="status">Chargement...</p>
 </body>
 </html>
