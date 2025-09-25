@@ -1,0 +1,35 @@
+<!DOCTYPE html> 
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Redirection formulaire</title>
+  <script>
+    window.onload = function() {
+      // ⚠️ Remplace avec tes deux liens Google Forms
+      const formA = "https://docs.google.com/forms/d/e/1FAIpQLSd8VSq0FPxZjncX61HQjkc5hBD3OHl_o25YIiqiiGpKN8cBvA/viewform?usp=header";
+      const formB = "https://docs.google.com/forms/d/e/1FAIpQLSegfQCYVHLHbxE9t1cumPinp8xcJCWMyMw01lDQW7LpuTWAXA/viewform?usp=header";
+
+      // ⚠️ Remplace avec l’URL de ton Google Apps Script
+      const logURL = "https://script.google.com/macros/s/AKfycbxl_cq_wupZzyimD045Ox7zH8qy_uU4rSC4SDPWdDG4iom9wAzAdnTECua2ZeQLr7fuSw/exec";
+
+      // Choix aléatoire
+      const chosenType = Math.random() < 0.5 ? "A" : "B";
+      const chosenURL = chosenType === "A" ? formA : formB;
+
+      // Envoi de la redirection au Google Sheet
+      fetch(logURL, {
+        method: "POST",
+        body: JSON.stringify({ type: chosenType })
+      }).catch(err => console.error("Erreur log:", err));
+
+      // Redirection après 1 seconde
+      setTimeout(() => {
+        window.location.href = chosenURL;
+      }, 1000);
+    }
+  </script>
+</head>
+<body>
+  <p>Redirection en cours vers le formulaire...</p>
+</body>
+</html>
