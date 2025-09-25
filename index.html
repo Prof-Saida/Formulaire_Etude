@@ -6,15 +6,16 @@
   <script>
     window.onload = function() {
       // ⚠️ Remplace avec tes deux liens Google Forms
-      const formA = "https://docs.google.com/forms/d/e/1FAIpQLSd8VSq0FPxZjncX61HQjkc5hBD3OHl_o25YIiqiiGpKN8cBvA/viewform?usp=dialog";
-      const formB = "https://docs.google.com/forms/d/e/1FAIpQLSegfQCYVHLHbxE9t1cumPinp8xcJCWMyMw01lDQW7LpuTWAXA/viewform?usp=header";
+      const formA = "https://docs.google.com/forms/d/e/1FAIpQLSd8VSq0FPxZjncX61HQjkc5hBD3OHl_o25YIiqiiGpKN8cBvA/viewform";
+      const formB = "https://docs.google.com/forms/d/e/1FAIpQLSegfQCYVHLHbxE9t1cumPinp8xcJCWMyMw01lDQW7LpuTWAXA/viewform";
 
       // ⚠️ Remplace avec l’URL de ton Google Apps Script
       const logURL = "https://script.google.com/macros/s/AKfycbxl_cq_wupZzyimD045Ox7zH8qy_uU4rSC4SDPWdDG4iom9wAzAdnTECua2ZeQLr7fuSw/exec";
 
       // Choix aléatoire
-      const chosenType = Math.random() < 0.5 ? "A" : "B";
-      const chosenURL = chosenType === "A" ? formA : formB;
+      // Choix aléatoire : 50% A, 50% B
+      const chosenType = (Math.random() < 0.5) ? "A" : "B";
+      const chosenURL = (chosenType === "A") ? formA : formB;
 
       // Envoi de la redirection au Google Sheet
       fetch(logURL, {
