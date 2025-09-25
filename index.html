@@ -5,11 +5,11 @@
   <title>Redirection formulaire</title>
   <script>
     window.addEventListener("load", function() {
-      const formC = "https://forms.gle/NkW6r1raprVhCsrn6";
-      const formD = "https://forms.gle/6iSbWUYpfS3Bv8Pc7";
+      const formA = "https://forms.gle/NkW6r1raprVhCsrn6";
+      const formB = "https://forms.gle/6iSbWUYpfS3Bv8Pc7";
 
-      const chosenType = (Math.random() < 0.5) ? formC : formD;
-      //const chosenURL = (chosenType === "A") ? formA : formB;
+      const chosenType = (Math.random() < 0.5) ? "A" : "B";
+      const chosenURL = (chosenType === "A") ? formA : formB;
 
       document.getElementById("status").innerText = 
         "Formulaire choisi : " + chosenType + " → Redirection en cours...";
