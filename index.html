@@ -20,10 +20,10 @@
       //const chosenURL = (chosenType === "A") ? formA : formB;
 
       // Envoi de la redirection au Google Sheet
-      fetch(logURL, {
-        method: "POST",
-        body: JSON.stringify({ type: chosenType })
-      }).catch(err => console.error("Erreur log:", err));
+     // fetch(logURL, {
+      //  method: "POST",
+       // body: JSON.stringify({ type: chosenType })
+     // }).catch(err => console.error("Erreur log:", err));
 
       // Redirection après 1 seconde
       setTimeout(() => {
