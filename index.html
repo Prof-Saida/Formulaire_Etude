@@ -14,8 +14,8 @@
 
       // Choix aléatoire
       // Choix aléatoire : 50% A, 50% B
-      const chosenType = (Math.random() < 0.5) ? "A" : "B";
-      const chosenURL = (chosenType === "A") ? formA : formB;
+      const chosenType = (Math.random() < 0.5) ? formA : formB;
+      //const chosenURL = (chosenType === "A") ? formA : formB;
 
       // Envoi de la redirection au Google Sheet
       fetch(logURL, {
