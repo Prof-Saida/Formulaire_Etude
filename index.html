@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès au Formulaire</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 60px 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+        
+        #formLink {
+            display: inline-block;
+            padding: 18px 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        #formLink:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+        }
+        
+        #formLink:active {
+            transform: translateY(0);
+        }
+        
+        .instruction {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #fff3cd;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #856404;
+            text-align: left;
+        }
+        
+        .instruction strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Accès au Formulaire</h1>
+        <p>Cliquez sur le lien ci-dessous pour accéder au formulaire</p>
+        
+        <a href="#" id="formLink">Ouvrir le formulaire</a>
+        
+        <div class="instruction">
+            <strong>⚙️ Configuration requise :</strong>
+            1. Remplacez les liens des formulaires A et B dans le code<br>
+            2. Configurez l'URL du Google Apps Script<br>
+            3. Le système alternera automatiquement entre les deux formulaires
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        const FORM_A_URL = 'https://forms.gle/GQDMDCCJjFoJNL937';
+        const FORM_B_URL = 'https://forms.gle/bQUzKVw4qmMAFjY68';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyjCjv8It98aAMFNlkveooicTrzHtHAA-8WxEZmrkTtIV6KAJIDPc-vltraXDq_BzhFKA/exec';
+        // ===================================
+        
+        let lastForm = null;
+        
+        function sendToGoogleSheet(formType) {
+            const timestamp = new Date().toISOString();
+            
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    type: formType,
+                    timestamp: timestamp
+                })
+            }).catch(() => {});
+        }
+        
+        document.getElementById('formLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            let formType, formUrl;
+            
+            if (lastForm === 'A') {
+                formType = 'Formulaire B';
+                formUrl = FORM_B_URL;
+                lastForm = 'B';
+            } else {
+                formType = 'Formulaire A';
+                formUrl = FORM_A_URL;
+                lastForm = 'A';
+            }
+            
+            // Envoyer le type à Google Sheets
+            sendToGoogleSheet(formType);
+            
+            // Rediriger vers le formulaire
+            window.location.href = formUrl;
+        });
+    </script>
+</body>
+</html>
