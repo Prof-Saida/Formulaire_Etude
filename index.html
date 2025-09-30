@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Accès au Formulaire</title>
+    <title>Redirection en cours...</title>
     <style>
         * {
             margin: 0;
@@ -26,79 +26,88 @@
             border-radius: 20px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             padding: 50px 40px;
-            max-width: 500px;
+            max-width: 450px;
             width: 100%;
             text-align: center;
         }
         
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
         h1 {
             color: #333;
-            margin-bottom: 15px;
-            font-size: 28px;
+            margin-bottom: 10px;
+            font-size: 24px;
         }
         
-        .subtitle {
+        p {
             color: #666;
             font-size: 16px;
-            margin-bottom: 35px;
         }
         
-        #formLink {
-            display: inline-block;
-            padding: 16px 45px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-        
-        #formLink:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-        
-        #formLink:active {
-            transform: translateY(0);
-        }
-        
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            color: #999;
-            font-size: 12px;
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #555;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📋 Accès au Formulaire</h1>
-        <p class="subtitle">Cliquez pour accéder au formulaire</p>
-        
-        <a href="#" id="formLink">Ouvrir le formulaire</a>
-        
-        <div class="footer">
-            Système d'alternance automatique
-        </div>
+        <div class="spinner"></div>
+        <h1>Redirection en cours...</h1>
+        <p>Veuillez patienter</p>
+        <div class="status" id="status">Préparation...</div>
     </div>
 
     <script>
         // ========== CONFIGURATION ==========
         const FORM_A_URL = 'https://forms.gle/f5SfhpjNyU2hNLTa6';
         const FORM_B_URL = 'https://forms.gle/Bggr2miD7K5LBFiM6';
-        const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyedjv5z7RDMCG3S3GAyV1bf1OxarIkZZdglxoGxf6eUc7I8LSNDo9WQZmSnq_5Yv-seg/exec';
+        const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylL_YudqKxtv-5x7gt7DuI-ZmEOUJs_EzfTUNm6IPenvd6-52PnFq4BcVNytFAGkIo5g/exec';
         // ===================================
         
-        let currentState = 'B'; // Commence avec B pour que le premier clic donne A
+        const STATUS_KEY = 'lastFormType';
+        
+        function getLastFormType() {
+            const params = new URLSearchParams(window.location.search);
+            const state = params.get('state');
+            if (state) {
+                return state;
+            }
+            return null;
+        }
         
         function sendToSheet(formType) {
             const now = new Date();
-            const date = now.toLocaleDateString('fr-FR') + ' ' + now.toLocaleTimeString('fr-FR');
+            const date = now.toLocaleDateString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            
+            const data = {
+                type: formType,
+                date: date
+            };
             
             fetch(GOOGLE_SHEET_SCRIPT_URL, {
                 method: 'POST',
@@ -106,34 +115,45 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    type: formType,
-                    date: date
-                })
-            }).catch(() => {});
+                body: JSON.stringify(data)
+            }).catch(err => {
+                console.error('Erreur envoi:', err);
+            });
         }
         
-        document.getElementById('formLink').addEventListener('click', function(e) {
-            e.preventDefault();
+        function redirect() {
+            const lastType = getLastFormType();
+            let formType, formUrl, nextState;
             
-            let formType, formUrl;
-            
-            if (currentState === 'A') {
+            if (lastType === 'A') {
                 formType = 'FormB';
                 formUrl = FORM_B_URL;
-                currentState = 'B';
+                nextState = 'B';
             } else {
                 formType = 'FormA';
                 formUrl = FORM_A_URL;
-                currentState = 'A';
+                nextState = 'A';
             }
             
-            // Enregistrer dans Google Sheets
+            document.getElementById('status').textContent = 'Redirection vers ' + formType + '...';
+            
+            // Envoyer les données à Google Sheets
             sendToSheet(formType);
             
-            // Rediriger vers le formulaire
-            window.location.href = formUrl;
-        });
+            // Attendre un court instant puis rediriger
+            setTimeout(() => {
+                // Construire l'URL avec le paramètre state pour la prochaine visite
+                const currentUrl = window.location.href.split('?')[0];
+                const redirectUrl = currentUrl + '?state=' + nextState;
+                
+                // Sauvegarder dans l'historique et rediriger
+                window.history.replaceState({}, '', redirectUrl);
+                window.location.href = formUrl;
+            }, 500);
+        }
+        
+        // Démarrer la redirection dès le chargement
+        redirect();
     </script>
 </body>
 </html>
