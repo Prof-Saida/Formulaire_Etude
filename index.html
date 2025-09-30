@@ -3,157 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirection en cours...</title>
+    <title>Formulaires Alternés</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
             padding: 20px;
+            background-color: #f5f5f5;
         }
         
-        .container {
-            background-color: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 50px 40px;
-            max-width: 450px;
-            width: 100%;
+        .link-container {
             text-align: center;
+            margin-bottom: 30px;
         }
         
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-        
-        p {
-            color: #666;
+        #toggleLink {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
             font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
         
-        .status {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            font-size: 14px;
+        #toggleLink:hover {
+            background-color: #0056b3;
+        }
+        
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .form-container.active {
+            display: block;
+        }
+        
+        h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
             color: #555;
+        }
+        
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        button[type="submit"]:hover {
+            background-color: #218838;
+        }
+        
+        .form-a {
+            border-left: 4px solid #007bff;
+        }
+        
+        .form-b {
+            border-left: 4px solid #ff6b6b;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="spinner"></div>
-        <h1>Redirection en cours...</h1>
-        <p>Veuillez patienter</p>
-        <div class="status" id="status">Préparation...</div>
+    <div class="link-container">
+        <a href="#" id="toggleLink">Afficher le formulaire</a>
+    </div>
+    
+    <div id="formA" class="form-container form-a">
+        <h2>📋 Formulaire A - Contact</h2>
+        <form>
+            <div class="form-group">
+                <label for="nomA">Nom complet :</label>
+                <input type="text" id="nomA" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="emailA">Email :</label>
+                <input type="email" id="emailA" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="telA">Téléphone :</label>
+                <input type="tel" id="telA" name="telephone">
+            </div>
+            <div class="form-group">
+                <label for="messageA">Message :</label>
+                <textarea id="messageA" name="message"></textarea>
+            </div>
+            <button type="submit">Envoyer</button>
+        </form>
+    </div>
+    
+    <div id="formB" class="form-container form-b">
+        <h2>📝 Formulaire B - Inscription</h2>
+        <form>
+            <div class="form-group">
+                <label for="prenomB">Prénom :</label>
+                <input type="text" id="prenomB" name="prenom" required>
+            </div>
+            <div class="form-group">
+                <label for="nomB">Nom :</label>
+                <input type="text" id="nomB" name="nom" required>
+            </div>
+            <div class="form-group">
+                <label for="emailB">Adresse email :</label>
+                <input type="email" id="emailB" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="societeB">Société :</label>
+                <input type="text" id="societeB" name="societe">
+            </div>
+            <div class="form-group">
+                <label for="commentaireB">Commentaire :</label>
+                <textarea id="commentaireB" name="commentaire"></textarea>
+            </div>
+            <button type="submit">S'inscrire</button>
+        </form>
     </div>
 
     <script>
-        // ========== CONFIGURATION ==========
-        const FORM_A_URL = 'https://forms.gle/f5SfhpjNyU2hNLTa6';
-        const FORM_B_URL = 'https://forms.gle/Bggr2miD7K5LBFiM6';
-        const GOOGLE_SHEET_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEyWtnZtVK3IEr-7gMgSkf8mPV_AiRMj4B0DAJkEEB_qA6ptT56MTWlm1iQ6i8YxqoVg/exec';
-        // ===================================
+        let currentForm = null;
         
-        const STATUS_KEY = 'lastFormType';
+        const link = document.getElementById('toggleLink');
+        const formA = document.getElementById('formA');
+        const formB = document.getElementById('formB');
         
-        function getLastFormType() {
-            const params = new URLSearchParams(window.location.search);
-            const state = params.get('state');
-            if (state) {
-                return state;
-            }
-            return null;
-        }
-        
-        function sendToSheet(formType) {
-            const now = new Date();
-            const date = now.toLocaleDateString('fr-FR', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-            });
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
             
-            const data = {
-                type: formType,
-                date: date
-            };
-            
-            fetch(GOOGLE_SHEET_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            }).catch(err => {
-                console.error('Erreur envoi:', err);
-            });
-        }
-        
-        function redirect() {
-            const lastType = getLastFormType();
-            let formType, formUrl, nextState;
-            
-            if (lastType === 'A') {
-                formType = 'FormB';
-                formUrl = FORM_B_URL;
-                nextState = 'B';
+            if (currentForm === 'A') {
+                formA.classList.remove('active');
+                formB.classList.add('active');
+                currentForm = 'B';
             } else {
-                formType = 'FormA';
-                formUrl = FORM_A_URL;
-                nextState = 'A';
+                formB.classList.remove('active');
+                formA.classList.add('active');
+                currentForm = 'A';
             }
-            
-            document.getElementById('status').textContent = 'Redirection vers ' + formType + '...';
-            
-            // Envoyer les données à Google Sheets
-            sendToSheet(formType);
-            
-            // Attendre un court instant puis rediriger
-            setTimeout(() => {
-                // Construire l'URL avec le paramètre state pour la prochaine visite
-                const currentUrl = window.location.href.split('?')[0];
-                const redirectUrl = currentUrl + '?state=' + nextState;
-                
-                // Sauvegarder dans l'historique et rediriger
-                window.history.replaceState({}, '', redirectUrl);
-                window.location.href = formUrl;
-            }, 500);
-        }
-        
-        // Démarrer la redirection dès le chargement
-        redirect();
+        });
     </script>
 </body>
 </html>
